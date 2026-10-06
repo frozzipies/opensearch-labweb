@@ -1,0 +1,12 @@
+services:
+  seeder:
+    build: ./seeder
+    image: soc-lab/opensearch-seeder:1.0
+    hostname: seeder
+    restart: "no"
+    environment:
+      - OPENSEARCH_URL=http://opensearch:9200
+      - DASHBOARDS_URL=http://dashboards:5601
+    depends_on:
+      - opensearch
+      - dashboards

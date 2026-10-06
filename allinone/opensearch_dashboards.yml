@@ -1,0 +1,5 @@
+server.host: "0.0.0.0"
+server.port: 5601
+opensearch.hosts: ["http://localhost:9200"]
+opensearch_security.enabled: false
+uiSettings.overrides.defaultRoute: "/app/dashboards#/view/security-events"
