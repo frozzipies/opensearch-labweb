@@ -15,9 +15,7 @@ fi
 
 # Start OpenSearch
 log "starting opensearch ..."
-runuser -u opensearch -- env \
-  OPENSEARCH_JAVA_OPTS="${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx512m}" \
-  /usr/share/opensearch/bin/opensearch > /var/log/opensearch.log 2>&1 &
+su -s /bin/bash opensearch -c "OPENSEARCH_JAVA_OPTS='${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx512m}' /usr/share/opensearch/bin/opensearch" > /var/log/opensearch.log 2>&1 &
 OS_PID=$!
 
 # Wait for OpenSearch
@@ -36,8 +34,7 @@ done
 
 # Start OpenSearch Dashboards
 log "starting dashboards ..."
-runuser -u opensearch -- \
-  /opt/opensearch-dashboards/bin/opensearch-dashboards > /var/log/dashboards.log 2>&1 &
+su -s /bin/bash opensearch -c "/opt/opensearch-dashboards/bin/opensearch-dashboards" > /var/log/dashboards.log 2>&1 &
 
 # Seed the dataset + create saved objects
 log "seeding ${EVENT_COUNT:-5000} events ..."
