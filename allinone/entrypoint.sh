@@ -13,9 +13,28 @@ if ! grep -q 'opensearch' /etc/hosts 2>/dev/null; then
   echo "127.0.0.1 opensearch dashboards" >> /etc/hosts
 fi
 
-# Start OpenSearch
+# Ensure opensearch user can write everywhere it needs to
+chown -R opensearch:opensearch /usr/share/opensearch /opt/opensearch-dashboards /var/log 2>/dev/null || true
+
+# Start OpenSearch as opensearch user
 log "starting opensearch ..."
-su -s /bin/bash opensearch -c "OPENSEARCH_JAVA_OPTS='${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx512m}' /usr/share/opensearch/bin/opensearch" > /var/log/opensearch.log 2>&1 &
+export OPENSEARCH_JAVA_OPTS="${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx512m}"
+cd /usr/share/opensearch
+exec_as_opensearch() {
+  # ngelinx strips su/runuser; use the container's own opensearch-docker-entrypoint
+  # or fall back to running directly (PaaS containers often run as root anyway)
+  if command -v gosu >/dev/null 2>&1; then
+    gosu opensearch "$@"
+  elif command -v su >/dev/null 2>&1; then
+    su -s /bin/bash opensearch -c "$*"
+  elif command -v runuser >/dev/null 2>&1; then
+    runuser -u opensearch -- "$@"
+  else
+    "$@"
+  fi
+}
+
+exec_as_opensearch /usr/share/opensearch/bin/opensearch > /var/log/opensearch.log 2>&1 &
 OS_PID=$!
 
 # Wait for OpenSearch
@@ -34,7 +53,7 @@ done
 
 # Start OpenSearch Dashboards
 log "starting dashboards ..."
-su -s /bin/bash opensearch -c "/opt/opensearch-dashboards/bin/opensearch-dashboards" > /var/log/dashboards.log 2>&1 &
+exec_as_opensearch /opt/opensearch-dashboards/bin/opensearch-dashboards > /var/log/dashboards.log 2>&1 &
 
 # Seed the dataset + create saved objects
 log "seeding ${EVENT_COUNT:-5000} events ..."
