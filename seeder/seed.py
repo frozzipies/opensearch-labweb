@@ -411,16 +411,17 @@ def saved_search():
     }
 
 def build_dashboard():
+    V = "2.19.1"
     panels = [
-        {"gridData":{"x":0, "y":0, "w":12,"h":6, "i":"1"},"panelIndex":"1","embeddableConfig":{},"panelRefName":"panel_0"},
-        {"gridData":{"x":12,"y":0, "w":12,"h":6, "i":"2"},"panelIndex":"2","embeddableConfig":{},"panelRefName":"panel_1"},
-        {"gridData":{"x":24,"y":0, "w":12,"h":6, "i":"3"},"panelIndex":"3","embeddableConfig":{},"panelRefName":"panel_2"},
-        {"gridData":{"x":36,"y":0, "w":12,"h":6, "i":"4"},"panelIndex":"4","embeddableConfig":{},"panelRefName":"panel_3"},
-        {"gridData":{"x":0, "y":6, "w":30,"h":16,"i":"5"},"panelIndex":"5","embeddableConfig":{},"panelRefName":"panel_4"},
-        {"gridData":{"x":30,"y":6, "w":18,"h":16,"i":"6"},"panelIndex":"6","embeddableConfig":{},"panelRefName":"panel_5"},
-        {"gridData":{"x":0, "y":22,"w":16,"h":16,"i":"7"},"panelIndex":"7","embeddableConfig":{},"panelRefName":"panel_6"},
-        {"gridData":{"x":16,"y":22,"w":32,"h":16,"i":"8"},"panelIndex":"8","embeddableConfig":{},"panelRefName":"panel_7"},
-        {"gridData":{"x":0, "y":38,"w":48,"h":20,"i":"9"},"panelIndex":"9","embeddableConfig":{},"panelRefName":"panel_8"},
+        {"version":V,"gridData":{"x":0, "y":0, "w":12,"h":6, "i":"1"},"panelIndex":"1","embeddableConfig":{},"panelRefName":"panel_0"},
+        {"version":V,"gridData":{"x":12,"y":0, "w":12,"h":6, "i":"2"},"panelIndex":"2","embeddableConfig":{},"panelRefName":"panel_1"},
+        {"version":V,"gridData":{"x":24,"y":0, "w":12,"h":6, "i":"3"},"panelIndex":"3","embeddableConfig":{},"panelRefName":"panel_2"},
+        {"version":V,"gridData":{"x":36,"y":0, "w":12,"h":6, "i":"4"},"panelIndex":"4","embeddableConfig":{},"panelRefName":"panel_3"},
+        {"version":V,"gridData":{"x":0, "y":6, "w":30,"h":16,"i":"5"},"panelIndex":"5","embeddableConfig":{},"panelRefName":"panel_4"},
+        {"version":V,"gridData":{"x":30,"y":6, "w":18,"h":16,"i":"6"},"panelIndex":"6","embeddableConfig":{},"panelRefName":"panel_5"},
+        {"version":V,"gridData":{"x":0, "y":22,"w":16,"h":16,"i":"7"},"panelIndex":"7","embeddableConfig":{},"panelRefName":"panel_6"},
+        {"version":V,"gridData":{"x":16,"y":22,"w":32,"h":16,"i":"8"},"panelIndex":"8","embeddableConfig":{},"panelRefName":"panel_7"},
+        {"version":V,"gridData":{"x":0, "y":38,"w":48,"h":20,"i":"9"},"panelIndex":"9","embeddableConfig":{},"panelRefName":"panel_8"},
     ]
     refs = [
         {"name":"panel_0","type":"visualization","id":"total-alerts"},
