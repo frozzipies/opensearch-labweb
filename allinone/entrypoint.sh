@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# =============================================================================
+#  SOC Lab entrypoint — OpenSearch + Dashboards + Seeder. No auth.
+#  Env vars:
+#    EVENT_COUNT          — number of security events to seed (default: 5000)
+#    OPENSEARCH_JAVA_OPTS — JVM heap size (default: -Xms512m -Xmx512m)
+# =============================================================================
 set -uo pipefail
 log() { echo "[labweb $(date +%H:%M:%S)] $*"; }
 
@@ -34,12 +40,14 @@ runuser -u opensearch -- \
   /opt/opensearch-dashboards/bin/opensearch-dashboards > /var/log/dashboards.log 2>&1 &
 
 # Seed the dataset + create saved objects
-log "seeding dataset ..."
+log "seeding ${EVENT_COUNT:-5000} events ..."
 OPENSEARCH_URL="http://localhost:9200" DASHBOARDS_URL="http://localhost:5601" \
+EVENT_COUNT="${EVENT_COUNT:-5000}" \
   python3 /opt/seeder/seed.py || log "seeder error (check above)."
 
 log "========================================="
 log " Ready. Dashboard: port 5601"
+log " No login required"
 log " Security events dashboard loads by default"
 log " Time range: Last 24 hours"
 log "========================================="
